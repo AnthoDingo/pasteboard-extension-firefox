@@ -53,7 +53,10 @@
   }
 
   function captureImage(){
-    //not yet ready
+    var error = "Could not screenshot the current page.";
+    screenshotButton.addClass("active");
+    removeListeners();
+    self.port.emit("captureImage", error);
   }
 
   function pasteImage(){
