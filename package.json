@@ -2,8 +2,9 @@
   "name": "pasteboard",
   "title": "Pasteboard",
   "id": "jid1-60ZNiEnBbKgIKg",
+  "icon": "data/images/icon-48.png",
   "description": "Upload image tool",
-  "author": "",
+  "author": "Janus_SGN",
   "license": "GPL 2.0",
   "version": "0.1"
 }
