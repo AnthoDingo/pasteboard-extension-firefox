@@ -64,8 +64,7 @@
     self.port.emit("pasteImage", error);
   }
 
-  function handlePaste(data) {
-    var error = "No image was found in your clipboard.";
+  function handlePaste(data, error) {
     readData(data, function(image){
       if (!image) return noImageFound(error);
 
