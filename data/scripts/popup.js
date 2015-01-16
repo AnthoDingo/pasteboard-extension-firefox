@@ -10,6 +10,10 @@
     errorContainer = $("#error");
     pageLink = $("#page-link");
 
+    self.port.on("handlePaste", function(data){
+      handlePaste(data);
+    });
+
     //event error
     self.port.on("noImageFound", function(message){ noImageFound(message); });
     self.port.on("displayError", function(message){ displayError(message); });
@@ -39,7 +43,7 @@
 
   // Handle clicks on the pasteboard.co link
   function clickLink() {
-    pageLink.toggleClass("active");
+    pageLink.addClass("active");
     removeListeners();
     openTab();
   }
@@ -54,7 +58,33 @@
   }
 
   function pasteImage(){
-    //not yet ready
+    var error = "No image was found in your clipboard.";
+    clipboardButton.addClass("active");
+    removeListeners();
+    self.port.emit("pasteImage", error);
+  }
+
+  function handlePaste(data) {
+    var error = "No image was found in your clipboard.";
+    readData(data, function(image){
+      if (!image) return noImageFound(error);
+
+      self.port.emit("insertImage", image, error);
+    });
+  }
+
+  // Read a file as base64 data
+  function readData(image, callback) {
+    // Call callback with input (asynchronously) if it
+    // already is a string (assuming base64)
+    if (typeof image === "string")
+      return setTimeout(callback.bind(this, image), 1);
+
+    fileReader = new FileReader();
+    fileReader.readAsDataURL(image);
+    fileReader.onload = function() {
+      callback(fileReader.result);
+    }
   }
 
   // Display an error in the error container element
@@ -71,8 +101,8 @@
   }
 
   function noImageFound(text) {
-    clipboardButton.toggleClass("active");
-    screenshotButton.toggleClass("active");
+    clipboardButton.removeClass("active");
+    screenshotButton.removeClass("active");
     addListeners();
     displayError(text);
   }
