@@ -10,9 +10,8 @@
     errorContainer = $("#error");
     pageLink = $("#page-link");
 
-    self.port.on("handlePaste", function(data){
-      handlePaste(data);
-    });
+    self.port.on("handlePaste", function(data){ handlePaste(data); });
+    self.port.on("resetButton", function(){ resetButton(); });
 
     //event error
     self.port.on("noImageFound", function(message){ noImageFound(message); });
@@ -104,6 +103,12 @@
     screenshotButton.removeClass("active");
     addListeners();
     displayError(text);
+  }
+
+  function resetButton() {
+    clipboardButton.removeClass("active");
+    screenshotButton.removeClass("active");
+    addListeners();
   }
 
   init();
